@@ -126,12 +126,18 @@ public class LLMService : ILLMService
         catch (Exception ex)
         {
             // Hata durumunda CV içeriğini RawContent'te saklayarak döndür
-            // Analiz sırasında bu içerik kullanılacak
+            // Analiz sırasında bu içerik kullanılacak ve isim çıkarılacak
+            // İsim olarak dosya adından temel bir isim çıkarmaya çalış
+            var baseName = Path.GetFileNameWithoutExtension(fileName)
+                .Replace("_", " ")
+                .Replace("-", " ");
+            
             return new Candidate
             {
-                FullName = "Parse Edilemedi",
+                FullName = string.Empty, // Boş bırak, analiz sırasında doldurulacak
                 FileName = fileName,
-                RawContent = content
+                RawContent = content,
+                IsParsed = false
             };
         }
     }
@@ -139,7 +145,7 @@ public class LLMService : ILLMService
     public async Task<AnalysisResult> AnalyzeCandidateAsync(Candidate candidate, JobRequirement requirement)
     {
         // Eğer CV parse edilemedi ise, raw content üzerinden direkt analiz yap
-        var prompt = candidate.FullName == "Parse Edilemedi" 
+        var prompt = !candidate.IsParsed || string.IsNullOrEmpty(candidate.FullName)
             ? BuildDirectAnalysisPrompt(candidate.RawContent, requirement)
             : BuildAnalysisPrompt(candidate, requirement);
             

@@ -174,6 +174,16 @@ public class ResumeAnalysisService : IResumeAnalysisService
             try
             {
                 var result = await _llmService.AnalyzeCandidateAsync(candidate, requirement);
+                
+                // Eğer CV parse edilememişse ve analiz sonucunda aday bilgisi varsa, güncelle
+                if ((candidate.FullName == "Parse Edilemedi" || string.IsNullOrEmpty(candidate.FullName)) 
+                    && !string.IsNullOrEmpty(result.CandidateName))
+                {
+                    candidate.FullName = result.CandidateName;
+                    candidate.Email = result.CandidateEmail ?? candidate.Email;
+                    candidate.Phone = result.CandidatePhone ?? candidate.Phone;
+                }
+                
                 candidate.AnalysisResult = result;
                 session.Results.Add(result);
                 response.Results.Add(result.ToDto(candidate));

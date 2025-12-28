@@ -11,6 +11,11 @@ public class CandidateDto
     public string FileName { get; set; } = string.Empty;
     public DateTime UploadedAt { get; set; }
     
+    /// <summary>
+    /// CV başarıyla parse edildiyse true
+    /// </summary>
+    public bool IsParsed { get; set; }
+    
     public List<SkillDto> Skills { get; set; } = new();
     public List<ExperienceDto> Experiences { get; set; } = new();
     public EducationDto? Education { get; set; }

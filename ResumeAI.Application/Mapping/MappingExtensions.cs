@@ -15,6 +15,7 @@ public static class MappingExtensions
             Phone = candidate.Phone,
             FileName = candidate.FileName,
             UploadedAt = candidate.UploadedAt,
+            IsParsed = candidate.IsParsed,
             Skills = candidate.Skills.Select(s => s.ToDto()).ToList(),
             Experiences = candidate.Experiences.Select(e => e.ToDto()).ToList(),
             Education = candidate.Education?.ToDto()

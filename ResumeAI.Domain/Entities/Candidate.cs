@@ -10,6 +10,12 @@ public class Candidate
     public string RawContent { get; set; } = string.Empty;
     public DateTime UploadedAt { get; set; } = DateTime.UtcNow;
     
+    /// <summary>
+    /// CV başarıyla parse edildiyse true, aksi halde false
+    /// Parse edilemeyen CV'ler analiz sırasında işlenir
+    /// </summary>
+    public bool IsParsed { get; set; } = true;
+    
     // Parsed CV Data
     public List<Skill> Skills { get; set; } = new();
     public List<Experience> Experiences { get; set; } = new();
